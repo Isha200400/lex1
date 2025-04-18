@@ -1,0 +1,36 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to convert binary string to decimal
+int binary_to_decimal(char *bin_str) {
+    int decimal = 0;
+    int base = 1;  // Start with the least significant bit
+    int len = strlen(bin_str);
+    
+    for (int i = len - 1; i >= 0; i--) {
+        if (bin_str[i] == '1') {
+            decimal += base;
+        }
+        base = base * 2;  // Move to the next higher bit
+    }
+    return decimal;
+}
+
+%}
+
+DIGIT   [01]
+BIN     {DIGIT}+        // Match binary number (sequence of 0s and 1s)
+
+%%
+
+{BIN} {
+    printf("Binary: %s -> Decimal: %d\n", yytext, binary_to_decimal(yytext));
+}
+
+%%
+
+int main() {
+    yylex();  // Start lexing input
+    return 0;
+}
