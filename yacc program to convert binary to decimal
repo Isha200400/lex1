@@ -1,0 +1,47 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int binary_to_decimal(const char *bin) {
+    int decimal = 0;
+    while (*bin) {
+        decimal = decimal * 2 + (*bin++ - '0');
+    }
+    return decimal;
+}
+%}
+
+%union {
+    char *str;
+}
+
+%token <str> BINARY
+%token EOL
+%type <str> input
+
+%%
+
+start:
+    input EOL { 
+        int dec = binary_to_decimal($1);
+        printf("Decimal: %d\n", dec); 
+        free($1);
+    }
+;
+
+input:
+    BINARY
+;
+
+%%
+
+int main() {
+    printf("Enter a binary number:\n");
+    return yyparse();
+}
+
+int yyerror(const char *msg) {
+    fprintf(stderr, "Error: %s\n", msg);
+    return 0;
+}
