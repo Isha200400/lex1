@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+bool isPerfectSquare(int num) {
+    if (num < 2) return true;
+
+    long low = 2, high = num / 2;
+
+    while (low <= high) {
+        long mid = (low + high) / 2;
+        long sq = mid * mid;
+
+        if (sq == num)
+            return true;
+        else if (sq < num)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+
+    return false;
+}
+
+int main() {
+    int num = 16;
+
+    if (isPerfectSquare(num))
+        printf("%d is a perfect square.\n", num);
+    else
+        printf("%d is NOT a perfect square.\n", num);
+
+    return 0;
+}
